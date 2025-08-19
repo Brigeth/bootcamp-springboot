@@ -1,5 +1,6 @@
 package com.bootcamp.customer.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,12 @@ public class MovementService {
         } else if ("Deposit".equalsIgnoreCase(movement.getType())) {
             account.setOpeningBalance(account.getOpeningBalance() + movement.getAmount());
         }
-
-    movement.setBalance(account.getOpeningBalance());
-    movement.setAccount(account); // Asignar la cuenta al movimiento
-    movementRepository.save(movement);
-    accountRepository.save(account);
-    return movement;
+        movement.setDate(LocalDateTime.now());
+        movement.setBalance(account.getOpeningBalance());
+        movement.setAccount(account); // Asignar la cuenta al movimiento
+        movementRepository.save(movement);
+        accountRepository.save(account);
+        return movement;
     }
 
     // F3: Consultar movimientos por cuenta 

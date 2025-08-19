@@ -1,6 +1,7 @@
 package com.bootcamp.customer.entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 
@@ -22,7 +23,7 @@ public class Movement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
-    private Date date;
+    private LocalDateTime date;
     private String type;
     private Float amount;
     private Float balance;

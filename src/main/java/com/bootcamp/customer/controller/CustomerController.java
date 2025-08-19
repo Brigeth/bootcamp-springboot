@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bootcamp.customer.repository.CustomerRepository;
+import com.bootcamp.customer.services.CustomerService;
 import com.bootcamp.customer.entity.*;
 
 @RestController
@@ -21,6 +22,8 @@ public class CustomerController {
 
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private CustomerService customerService;
 
     @GetMapping
     public List<Customer> getAllCustomers() {
@@ -34,13 +37,13 @@ public class CustomerController {
 
     @PostMapping
     public Customer createCustomer(@RequestBody Customer customer) {
-        return customerRepository.save(customer);
+        return customerService.registerCustomer(customer);
     }
 
     @PutMapping("/{id}")
     public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
         customer.setId(id);
-        return customerRepository.save(customer);
+        return customerService.updateCustomer(id, customer);
     }
 
     @DeleteMapping("/{id}")

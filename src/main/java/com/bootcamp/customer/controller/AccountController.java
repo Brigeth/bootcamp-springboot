@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bootcamp.customer.entity.Account;
 import com.bootcamp.customer.repository.AccountRepository;
 import com.bootcamp.customer.repository.CustomerRepository;
+import com.bootcamp.customer.services.AccountService;
 import com.bootcamp.customer.entity.Customer;
 
 @RestController
@@ -24,9 +25,9 @@ public class AccountController {
 
     @Autowired
     private AccountRepository accountRepository;
-
+    
     @Autowired
-    private CustomerRepository customerRepository;
+    private AccountService accountService;
 
     @GetMapping
     public List<Account> getAllAccounts() {
@@ -41,21 +42,13 @@ public class AccountController {
 
     @PostMapping
     public Account createAccount(@RequestBody Account account) {
-        // Validar que el cliente existe antes de asociar
-        if (account.getCustomer() == null || account.getCustomer().getId() == null) {
-            throw new IllegalArgumentException("The 'customer.id' field is required");
-        }
-        Customer customer = customerRepository.findById(account.getCustomer().getId())
-                .orElseThrow(() -> new IllegalArgumentException("The customer with id " + account.getCustomer().getId() + " does not exist"));
-        account.setCustomer(customer);
-        return accountRepository.save(account);
+        return accountService.createAccount(account);
     }
 
 
     @PutMapping("/{id}")
     public Account updateAccount(@PathVariable Long id, @RequestBody Account account) {
-        account.setId(id);
-        return accountRepository.save(account);
+        return accountService.updateAccount(id, account);
     }
 
     @DeleteMapping("/{id}")
